@@ -60,7 +60,9 @@ class VisualOdometry:
 		y = float(ss[7])
 		z = float(ss[11])
 		self.trueX, self.trueY, self.trueZ = x, y, z
-		return np.sqrt((x - x_prev)*(x - x_prev) + (y - y_prev)*(y - y_prev) + (z - z_prev)*(z - z_prev))
+                scale = np.sqrt((x - x_prev)*(x - x_prev) + (y - y_prev)*(y - y_prev) + (z - z_prev)*(z - z_prev)) 
+                print("scale",scale)
+		return scale
 
 	def processFirstFrame(self):
 		self.px_ref = self.detector.detect(self.new_frame)
@@ -88,7 +90,7 @@ class VisualOdometry:
 		self.px_ref = self.px_cur
 
 	def update(self, img, frame_id):
-		assert(img.ndim==2 and img.shape[0]==self.cam.height and img.shape[1]==self.cam.width), "Frame: provided image has not the same size as the camera model or image is not grayscale"
+		#assert(img.ndim==2 and img.shape[0]==self.cam.height and img.shape[1]==self.cam.width), "Frame: provided image has not the same size as the camera model or image is not grayscale"
 		self.new_frame = img
 		if(self.frame_stage == STAGE_DEFAULT_FRAME):
 			self.processFrame(frame_id)
